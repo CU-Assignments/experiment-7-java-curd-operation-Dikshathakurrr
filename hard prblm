@@ -1,0 +1,67 @@
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            StudentController controller = new StudentController();
+            Scanner scanner = new Scanner(System.in);
+
+            while (true) {
+                System.out.println("\n1. Add Student\n2. Update Student\n3. Delete Student\n4. View All Students\n5. Exit");
+                System.out.print("Enter choice: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter Name: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Enter Department: ");
+                        String department = scanner.nextLine();
+                        System.out.print("Enter Marks: ");
+                        double marks = scanner.nextDouble();
+                        controller.addStudent(new Student(0, name, department, marks));
+                        break;
+                    
+                    case 2:
+                        System.out.print("Enter Student ID to update: ");
+                        int updateId = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter New Name: ");
+                        String newName = scanner.nextLine();
+                        System.out.print("Enter New Department: ");
+                        String newDept = scanner.nextLine();
+                        System.out.print("Enter New Marks: ");
+                        double newMarks = scanner.nextDouble();
+                        controller.updateStudent(updateId, newName, newDept, newMarks);
+                        break;
+                    
+                    case 3:
+                        System.out.print("Enter Student ID to delete: ");
+                        int deleteId = scanner.nextInt();
+                        controller.deleteStudent(deleteId);
+                        break;
+
+                    case 4:
+                        List<Student> students = controller.getAllStudents();
+                        System.out.println("\nStudent Records:");
+                        for (Student student : students) {
+                            System.out.println("ID: " + student.getId() + ", Name: " + student.getName() + ", Dept: " + student.getDepartment() + ", Marks: " + student.getMarks());
+                        }
+                        break;
+                    
+                    case 5:
+                        System.out.println("Exiting...");
+                        return;
+                    
+                    default:
+                        System.out.println("Invalid choice! Try again.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
